@@ -25,6 +25,10 @@ else
   ROS_PID=""
 fi
 
+cd ./envtest/ros
+python3 run_competition.py --vision_based &
+cd -
+
 SUMMARY_FILE="evaluation.yaml"
 "" > $SUMMARY_FILE
 
