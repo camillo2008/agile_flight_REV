@@ -18,7 +18,7 @@ cd src
 git clone git@github.com:MichaelBosello/agile_flight.git
 
 
-cd $project_path
+cd agile_flight
 
 #################################################
 #################################################
