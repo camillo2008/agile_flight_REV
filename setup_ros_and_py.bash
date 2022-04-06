@@ -104,6 +104,8 @@ conda install ~/Downloads/qt-5.12.1-hbfa2a6e_0.tar.bz2
 conda deactivate
 conda deactivate
 
+sudo apt install python3-pip
+
 pip3 install uniplot
 pip3 install ruamel.yaml
 pip3 install numpy --upgrade
