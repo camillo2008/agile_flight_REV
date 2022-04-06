@@ -119,6 +119,8 @@ pip3 install torch
 cd $project_path
 catkin build
 
+$ echo "$CATKIN_WS/icra22_competition_ws/devel/setup.bash" >> ~/.bashrc
+
 #################################################
 #################################################
 #################################################
