@@ -1,13 +1,5 @@
 #!/bin/bash
 
-if [[ ! -f "$(pwd)/setup_py.bash" ]]
-then
-  echo "please launch from the agile_flight folder!"
-  exit
-fi
-
-project_path=$PWD
-echo $project_path
 
 #################################################
 #################################################
@@ -31,6 +23,16 @@ cd $project_path
 #################################################
 #################################################
 #################################################
+
+
+if [[ ! -f "$(pwd)/setup_py.bash" ]]
+then
+  echo "please launch from the agile_flight folder!"
+  exit
+fi
+
+project_path=$PWD
+echo $project_path
 
 echo "Making sure submodules are initialized and up-to-date"
 git submodule update --init --recursive
