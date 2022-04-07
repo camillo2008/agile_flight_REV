@@ -9,6 +9,7 @@ export ROS_VERSION=noetic
 export CATKIN_WS=./icra22_competition_ws
 mkdir -p $CATKIN_WS/src
 cd $CATKIN_WS
+ws_path = $PWD
 catkin init
 catkin config --extend /opt/ros/$ROS_VERSION
 catkin config --merge-devel
@@ -119,7 +120,8 @@ pip3 install torch
 cd $project_path
 catkin build
 
-echo "$CATKIN_WS/icra22_competition_ws/devel/setup.bash" >> ~/.bashrc
+echo "source $ws_path/icra22_competition_ws/devel/setup.bash" >> ~/.bashrc
+source ~/.bashrc
 
 #################################################
 #################################################
