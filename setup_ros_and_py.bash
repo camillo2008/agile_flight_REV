@@ -120,7 +120,7 @@ pip3 install torch
 cd $project_path
 catkin build
 
-echo "source $ws_path/icra22_competition_ws/devel/setup.bash" >> ~/.bashrc
+echo "source $ws_path/devel/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 
 #################################################
