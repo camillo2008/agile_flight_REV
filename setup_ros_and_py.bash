@@ -9,7 +9,7 @@ export ROS_VERSION=noetic
 export CATKIN_WS=./icra22_competition_ws
 mkdir -p $CATKIN_WS/src
 cd $CATKIN_WS
-ws_path="$PWD"
+ws_path=$PWD
 catkin init
 catkin config --extend /opt/ros/$ROS_VERSION
 catkin config --merge-devel
@@ -32,7 +32,7 @@ then
   exit
 fi
 
-project_path="$PWD"
+project_path=$PWD
 echo $project_path
 
 echo "Making sure submodules are initialized and up-to-date"
