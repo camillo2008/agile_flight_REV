@@ -32,7 +32,7 @@
           if="$(arg gui)"/>
 
     <!-- Flightmare Standalone -->
-    <node name="flight_render" pkg="flightrender" type="RPG_Flightmare.x86_64" args="-input-port 10243 -output-port 10244" if="$(arg render)"/>
+    <node name="flight_render" pkg="flightrender" type="RPG_Flightmare.x86_64" args="-input-port 10253 -output-port 10254" if="$(arg render)"/>
     <!-- args="-batchmode"/> -->
 
 </launch>
