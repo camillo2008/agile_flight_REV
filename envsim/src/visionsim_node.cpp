@@ -43,20 +43,26 @@ VisionSim::VisionSim(const ros::NodeHandle &nh, const ros::NodeHandle &pnh)
   simulator_.addModel(ModelThrustTorqueSimple{quad_});
   simulator_.addModel(ModelRigidBody{quad_});
 
-  std::string env_cfg_file =
+ std::string env_cfg_file =
     getenv("FLIGHTMARE_PATH") +
     std::string("/flightpy/configs/vision/config.yaml");
 
-  vision_env_ptr_ = std::make_unique<flightlib::VisionEnv>(env_cfg_file, 0);
-  if (render_) {
-    std::string camera_config = ros_param_directory_ + "/camera_config.yaml";
+    vision_env_ptr_ = std::make_unique<flightlib::VisionEnv>(env_cfg_file, 0);
+    if (render_) {
+      std::string camera_config = ros_param_directory_ + "/camera_config.yaml";
     if (!(std::filesystem::exists(camera_config))) {
       ROS_ERROR("Configuration file [%s] does not exists.",
                 camera_config.c_str());
     }
     YAML::Node cfg_node = YAML::LoadFile(camera_config);
     vision_env_ptr_->configCamera(cfg_node);
-    vision_env_ptr_->setUnity(render_);
+
+    YAML::Node unity_cfg = YAML::LoadFile(env_cfg_file);
+    if(unity_cfg["unity"]["input_port"] || unity_cfg["unity"]["output_port"])
+      vision_env_ptr_->setUnity(render_, unity_cfg["unity"]["input_port"].as<int>(), unity_cfg["unity"]["output_port"].as<int>());
+    else
+      vision_env_ptr_->setUnity(render_);
+
     vision_env_ptr_->connectUnity();
   }
 

@@ -30,7 +30,7 @@ python3 run_competition.py --vision_based &
 cd -
 
 SUMMARY_FILE="evaluation.yaml"
-"" > $SUMMARY_FILE
+echo "" > $SUMMARY_FILE
 
 # Perform N evaluation runs
 for i in $(eval echo {1..$N})
