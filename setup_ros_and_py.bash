@@ -99,6 +99,8 @@ pip install .
 #################################################
 #################################################
 
+pip install psutil
+
 wget https://anaconda.org/conda-forge/qt/5.12.1/download/linux-64/qt-5.12.1-hbfa2a6e_0.tar.bz2 -P ~/Downloads/
 conda install ~/Downloads/qt-5.12.1-hbfa2a6e_0.tar.bz2
 
@@ -116,6 +118,7 @@ pip3 install scipy
 pip3 install opencv-python opencv-contrib-python
 pip3 install rospkg
 pip3 install torch
+pip3 install psutil
 
 cd $project_path
 catkin build
