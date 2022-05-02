@@ -47,6 +47,10 @@ do
   cd ./envtest/ros/
   python3 evaluation_node.py &
   PY_PID="$!"
+
+  python3 run_competition.py &
+  COMP_PID="$!"
+
   cd -
 
   sleep 0.5
@@ -60,6 +64,8 @@ do
 
   cat "$SUMMARY_FILE" "./envtest/ros/summary.yaml" > "tmp.yaml"
   mv "tmp.yaml" "$SUMMARY_FILE"
+
+  kill -SIGINT "$COMP_PID"
 done
 
 
