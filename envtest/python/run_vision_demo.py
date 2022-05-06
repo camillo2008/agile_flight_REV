@@ -39,9 +39,9 @@ def main():
         # to simulate rgb camera
         cfg["rgb_camera"]["on"] = "yes"
 
-
-    # load the Unity standardalone, make sure you have downloaded it.
-    os.system(os.environ["FLIGHTMARE_PATH"] + "/flightrender/RPG_Flightmare.x86_64 &")
+    FLIGHTMAER_EXE = "RPG_Flightmare.x86_64"
+    os.system(os.environ["FLIGHTMARE_PATH"] + "/flightrender/" + FLIGHTMAER_EXE + " -input-port " + 
+                str(cfg["unity"]["input_port"]) + " -output-port " + str(cfg["unity"]["output_port"]) + " > /dev/null &")
 
     # define the number of environment for parallelization simulation
     cfg["simulation"]["num_envs"] = 1 
@@ -50,7 +50,7 @@ def main():
     env = VisionEnv_v1(dump(cfg, Dumper=RoundTripDumper), False)
     env = wrapper.FlightEnvVec(env)
 
-    ep_length = 100
+    ep_length = 10000
 
     obs_dim = env.obs_dim
     act_dim = env.act_dim
@@ -94,7 +94,7 @@ def main():
       cv2.imshow("rgb_img", rgb_img_tile)
       # cv2.imwrite("./images/img_{0:05d}.png".format(frame_id), rgb_img_tile)
       # wait for the purpose of using open cv visualization
-      cv2.waitKey(500)
+      #cv2.waitKey(500)
 
       # ======Retrive Depth Image=========
       raw_depth_images = env.getDepthImage()
@@ -109,7 +109,7 @@ def main():
       depth_img_tile = cv2.vconcat([cv2.hconcat(im_list_h) for im_list_h in depth_img_list])
       cv2.imshow("depth_img", depth_img_tile)
       # wait for the purpose of using open cv visualization
-      cv2.waitKey(500)
+      cv2.waitKey(4)
 
     #
     if args.render:
