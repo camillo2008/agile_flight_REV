@@ -12,15 +12,13 @@ from utils import AgileCommandMode, AgileCommand
 
 ############### PARAMS ########################
 LOAD_PATH = os.path.dirname(os.path.abspath(__file__)) + "/trained-models/out-run-YYYY-MM-DD-HH-MM-SS/best_model/best_model"
+VISION_EVAL = True
+
 USE_DEPTH = False
-
-VISION_EVAL = 1
-
 N_FRAMES = 1
-IMAGE_WIDTH = 120
-IMAGE_HEIGHT = 120
 
-IMAGE_CHANNELS = 1 if USE_DEPTH else 3
+
+
 
 ###################### LOAD_YAML ###################
 env_cfg = YAML().load(
@@ -28,6 +26,13 @@ env_cfg = YAML().load(
         os.environ["FLIGHTMARE_PATH"] + "/flightpy/configs/vision/config.yaml", "r"
     )
 )
+
+##################### LOAD_CAMERA_PARAMS #####################
+
+IMAGE_WIDTH = env_cfg["rgb_camera"]["width"]
+IMAGE_HEIGHT = env_cfg["rgb_camera"]["height"]
+IMAGE_CHANNELS = 1 if USE_DEPTH else 3
+
 ###################### ACTION_NORMALIZATION_PARAMS ###################
 quad_mass = env_cfg["quadrotor_dynamics"]["mass"]
 omega_max = env_cfg["quadrotor_dynamics"]["omega_max"]
@@ -140,7 +145,7 @@ class PingThreadStateBased(Thread):
             while not self.stopped.wait(0.00001):
                 last_action_st_based, _ = model_ppo.predict(last_state_st_based, deterministic=True)
 
-if(VISION_EVAL != 0):
+if(VISION_EVAL == True):
 	thread = PingThreadVision(stopFlag)
 	model_ppo.predict(last_state_vision, deterministic=True)
 else:
