@@ -11,9 +11,12 @@ from std_msgs.msg import Empty
 
 from envsim_msgs.msg import ObstacleArray
 from rl_example import load_rl_policy
-from user_code import compute_command_vision_based, compute_command_state_based
+from user_code import compute_command_vision_based, compute_command_state_based, USE_DEPTH
 from utils import AgileCommandMode, AgileQuadState
 
+
+
+IMG_TOPIC = "depth" if USE_DEPTH else "image"
 
 class AgilePilotNode:
     def __init__(self, vision_based=False, ppo_path=None):
@@ -36,7 +39,7 @@ class AgilePilotNode:
         self.odom_sub = rospy.Subscriber("/" + quad_name + "/dodgeros_pilot/state", QuadState, self.state_callback,
                                          queue_size=1, tcp_nodelay=True)
 
-        self.img_sub = rospy.Subscriber("/" + quad_name + "/dodgeros_pilot/unity/depth", Image, self.img_callback,
+        self.img_sub = rospy.Subscriber("/" + quad_name + "/dodgeros_pilot/unity/" + IMG_TOPIC, Image, self.img_callback,
                                         queue_size=1, tcp_nodelay=True)
         self.obstacle_sub = rospy.Subscriber("/" + quad_name + "/dodgeros_pilot/groundtruth/obstacles", ObstacleArray,
                                              self.obstacle_callback, queue_size=1, tcp_nodelay=True)
