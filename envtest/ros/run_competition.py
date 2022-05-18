@@ -11,7 +11,7 @@ from std_msgs.msg import Empty
 
 from envsim_msgs.msg import ObstacleArray
 from rl_example import load_rl_policy
-from user_code import compute_command_vision_based, compute_command_state_based, USE_DEPTH
+from user_code import compute_command_vision_based, compute_command_state_based, USE_DEPTH, VISION_EVAL
 from utils import AgileCommandMode, AgileQuadState
 
 
@@ -119,10 +119,10 @@ class AgilePilotNode:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Agile Pilot.')
-    parser.add_argument('--vision_based', help='Fly vision-based', required=False, dest='vision_based',
-                        action='store_true')
+    #parser.add_argument('--vision_based', help='Fly vision-based', required=False, dest='vision_based',
+    #                    action='store_true')
     parser.add_argument('--ppo_path', help='PPO neural network policy', required=False,  default=None)
 
     args = parser.parse_args()
-    agile_pilot_node = AgilePilotNode(vision_based=args.vision_based, ppo_path=args.ppo_path)
+    agile_pilot_node = AgilePilotNode(vision_based=VISION_EVAL, ppo_path=args.ppo_path)
     rospy.spin()
