@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import os
-import time
 from threading import Thread,Event
 from ruamel.yaml import YAML
 from stable_baselines3 import PPO
@@ -69,7 +68,6 @@ def stack_frames(frame_list, new_frame):
         frame_list.insert(0, new_frame)
     return frame_list
 
-
 def _normalize(value, min, max):
     return 2 * (value - min) / (max - min) - 1
 
@@ -83,7 +81,6 @@ def normalize_drone_state(drone_state):
     drone_state[:, 10] = _normalize(drone_state[:, 10], -9, 9)
     drone_state[:, 11] = _normalize(drone_state[:, 11], -9, 9)
     drone_state[:, 12] = _normalize(drone_state[:, 12], -9, 9)
-
     return drone_state.copy()
 
 
@@ -92,7 +89,6 @@ def normalize_state_obstacles(obstacles):
     obstacles[:, 1::4] = _normalize(obstacles[:, 1::4], -20, 1008)
     obstacles[:, 2::4] = _normalize(obstacles[:, 2::4], -10, 1000)
     obstacles[:, 3::4] = _normalize(obstacles[:, 3::4], 0, 1.5)
-
     return obstacles.copy()
 
 
@@ -117,8 +113,7 @@ last_state_st_based = {
         dict_obs_key: np.zeros((1,40))
         }
 
-last_action_vision = np.array([[0, 0, 0, 0]])
-last_action_st_based = np.array([[0, 0, 0, 0]])
+last_action = np.array([[0, 0, 0, 0]])
 
 stopFlag = Event()
 
@@ -128,10 +123,10 @@ class PingThreadVision(Thread):
         self.stopped = event
 
     def run(self):
-        global last_action_vision
+        global last_action
         while True:
             while not self.stopped.wait(0.00001):
-                last_action_vision, _ = model_ppo.predict(last_state_vision, deterministic=True)
+                last_action, _ = model_ppo.predict(last_state_vision, deterministic=True)
 
 
 class PingThreadStateBased(Thread):
@@ -140,10 +135,10 @@ class PingThreadStateBased(Thread):
         self.stopped = event
 
     def run(self):
-        global last_action_st_based
+        global last_action
         while True:
             while not self.stopped.wait(0.00001):
-                last_action_st_based, _ = model_ppo.predict(last_state_st_based, deterministic=True)
+                last_action, _ = model_ppo.predict(last_state_st_based, deterministic=True)
 
 if(VISION_EVAL == True):
 	thread = PingThreadVision(stopFlag)
@@ -180,9 +175,8 @@ def compute_command_vision_based(state, img):
 
     last_state_vision = obs
 
-    action = last_action_vision
+    action = last_action.copy()
     ############ NORMALIZE_ACTION #########
-    #action = np.array([[-0.68, 0, 0.5, 0]])
     action = (action * act_std + act_mean)[0, :]
 
 
@@ -215,7 +209,7 @@ def compute_command_state_based(state, obstacles, rl_policy=None):
 
     last_state_st_based = obs
 
-    action = last_action_st_based
+    action = last_action.copy()
     ############ NORMALIZE_ACTION #########
     action = (action * act_std + act_mean)[0, :]
 
