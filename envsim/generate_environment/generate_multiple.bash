@@ -15,7 +15,8 @@ then
 else
   SINGLE_SPHERE_PARAM=$2
 fi
-
+#OLD EASY are 80
+#GOOD PARAMS ARE: 140 sphere = 0.3
 if [ -z $3 ]
 then
   DENSITY_MULTIPLIER=1
@@ -28,7 +29,7 @@ for i in $(eval echo {0..$N})
 do
   dirname="environment_""$i"
   mkdir -p $dirname
-  python obstacle_generator.py "$RANDOM" $SINGLE_SPHERE_PARAM $DENSITY_MULTIPLIER
+  python3 obstacle_generator.py "$RANDOM" $SINGLE_SPHERE_PARAM $DENSITY_MULTIPLIER
   mv csvtrajs $dirname
   mv dynamic_obstacles.yaml $dirname
   mv static_obstacles.csv $dirname
